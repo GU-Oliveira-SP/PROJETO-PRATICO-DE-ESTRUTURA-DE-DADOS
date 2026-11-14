@@ -1,0 +1,81 @@
+2
+3
+4
+6
+7
+1
+0
+-10
+abc
+12abc
+999999999999
+50
+
+     
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  Algoritmos e Estruturas de Dados  
+Thomas Cormen
+0
+-5
+2027
+dois mil
+2009
+1
+30
+Codigo Limpo
+Robert C. Martin
+2008
+1
+70
+O Programador Pragmatico
+Andrew Hunt
+1999
+1
+20
+Linguagem C
+Dennis Ritchie
+1988
+1
+40
+Padroes de Projeto
+Erich Gamma
+1994
+1
+80
+Engenharia de Software
+Ian Sommerville
+2011
+1
+30
+4
+2
+40
+2
+99
+3
+99
+3
+20
+3
+70
+3
+50
+4
+5
+30
+5
+999
+5
+30
+5
+50
+7
+6
+6
+7
+6
+6
+6
+5
+100
+0
