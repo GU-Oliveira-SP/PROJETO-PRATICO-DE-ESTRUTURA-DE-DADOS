@@ -21,8 +21,7 @@ static NoBST* criar_no(Livro novo_livro) {
 
 /*
  * 1. Insercao na BST (recursiva classica).
- * Compara o ID do novo livro com o ID do no atual para decidir se vai
- * para a subarvore da esquerda (menor) ou da direita (maior).
+ * Compara o IDs para decidir se vai para a subarvore da esquerda (menor) ou da direita (maior).
  */
 NoBST* bst_inserir(NoBST *raiz, Livro novo_livro) {
     /* Caso base: chegou em uma posicao vazia, cria e retorna o novo no */
@@ -47,11 +46,9 @@ NoBST* bst_inserir(NoBST *raiz, Livro novo_livro) {
 }
 
 /*
- * 2. Busca por ID na BST (recursiva).
- * Retorna o ponteiro para o no encontrado ou NULL se nao existir.
- */
+ * 2. Busca por ID na BST (recursiva).*/
 NoBST* bst_buscar(NoBST *raiz, int id) {
-    /* Caso base: arvore vazia ou chegou ao fim sem encontrar, ou encontrou o ID */
+    
     if (raiz == NULL || raiz->dado.id == id) {
         return raiz;
     }
@@ -61,14 +58,69 @@ NoBST* bst_buscar(NoBST *raiz, int id) {
         return bst_buscar(raiz->esquerda, id);
     }
 
-    /* Caso contrario, busca na direita */
+    /* busca na direita */
     return bst_buscar(raiz->direita, id);
 }
 
 /*
- * 3. Listagem Em-Ordem (Esquerda -> Raiz -> Direita).
- * Exibe os livros em ordem crescente de ID.
+ * Funcao auxiliar que encontra o no com o menor ID em uma subarvore.*/
+static NoBST* encontrarMinimo(NoBST *no) {
+    NoBST *atual = no;
+    while (atual != NULL && atual->esquerda != NULL) {
+        atual = atual->esquerda;
+    }
+    return atual;
+}
+
+/*
+ * 3. Remocao por ID na BST (recursiva).
+ * Retorna a nova raiz da subarvore apos a remocao.
  */
+NoBST* bst_remover(NoBST *raiz, int id) {
+    
+    if (raiz == NULL) {
+        return NULL;
+    }
+
+    /* Procura o no a ser removido na subarvore esquerda ou direita */
+    if (id < raiz->dado.id) {
+        raiz->esquerda = bst_remover(raiz->esquerda, id);
+    } else if (id > raiz->dado.id) {
+        raiz->direita = bst_remover(raiz->direita, id);
+    } else {
+        
+        /* Caso 1: No folha (0 filhos) */
+        if (raiz->esquerda == NULL && raiz->direita == NULL) {
+            free(raiz);
+            return NULL;
+        }
+        /* Caso 2a: No com apenas 1 filho (apenas na direita) */
+        else if (raiz->esquerda == NULL) {
+            NoBST *filho = raiz->direita;
+            free(raiz);
+            return filho;
+        }
+        /* Caso 2b: No com apenas 1 filho (apenas na esquerda) */
+        else if (raiz->direita == NULL) {
+            NoBST *filho = raiz->esquerda;
+            free(raiz);
+            return filho;
+        }
+        /* Caso 3: No com 2 filhos */
+        else {
+            /* Encontra o sucessor em-ordem (menor no da subarvore direita) */
+            NoBST *sucessor = encontrarMinimo(raiz->direita);
+
+            raiz->dado = sucessor->dado;
+
+            raiz->direita = bst_remover(raiz->direita, sucessor->dado.id);
+        }
+    }
+
+    return raiz;
+}
+
+/*4. Listagem Em-Ordem (Esquerda -> Raiz -> Direita).*/
 void bst_listar_em_ordem(NoBST *raiz) {
     if (raiz != NULL) {
         bst_listar_em_ordem(raiz->esquerda);
@@ -81,10 +133,7 @@ void bst_listar_em_ordem(NoBST *raiz) {
     }
 }
 
-/*
- * 4. Liberacao de memoria da BST em Pos-Ordem (Esquerda -> Direita -> Raiz).
- * Garante que os filhos sejam liberados antes do no pai.
- */
+/*5. Liberacao de memoria da BST em Pos-Ordem (Esquerda -> Direita -> Raiz).*/
 void bst_liberar(NoBST *raiz) {
     if (raiz != NULL) {
         bst_liberar(raiz->esquerda);

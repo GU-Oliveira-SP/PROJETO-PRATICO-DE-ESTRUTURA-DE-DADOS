@@ -151,14 +151,14 @@ void exibir_menu(void) {
     printf("\n========================================\n");
     printf("        SISTEMA DE BIBLIOTECA           \n");
     printf("========================================\n");
-    printf("1 - Cadastrar livro (BST)\n");
-    printf("2 - Buscar livro por ID (BST)\n");
-    printf("3 - Remover livro por ID (BST)\n");
-    printf("4 - Listar livros em-ordem (BST)\n");
-    printf("5 - Enfileirar ID na fila de espera (Enqueue)\n");
-    printf("6 - Atender proximo ID da fila (Dequeue)\n");
-    printf("7 - Exibir fila de espera\n");
-    printf("0 - Encerrar programa\n");
+    printf("1 - Cadastrar registro na BST\n");
+    printf("2 - Buscar registro na BST por ID\n");
+    printf("3 - Remover registro da BST por ID\n");
+    printf("4 - Listar registros da BST em-ordem\n");
+    printf("5 - Inserir ID na estrutura linear (Fila)\n");
+    printf("6 - Remover da estrutura linear (Fila)\n");
+    printf("7 - Exibir estrutura linear (Fila)\n");
+    printf("0 - Encerrar\n");
     printf("========================================\n");
 }
 
@@ -168,7 +168,7 @@ int main(void) {
     NoBST *raiz_catalogo = NULL;
     Fila fila_espera;
 
-    (void)fila_espera;
+    fila_inicializar(&fila_espera);
 
     do {
         exibir_menu();
@@ -219,9 +219,27 @@ int main(void) {
                 }
                 break;
             }
-            case 3:
-                printf("\n[Opcao 3] Remocao na BST sera implementada na proxima etapa.\n");
+            case 3: {
+                int id_remover;
+                NoBST *alvo;
+
+                printf("\n--- [3 - Remover Livro por ID] ---\n");
+                if (raiz_catalogo == NULL) {
+                    printf("O catalogo esta vazio! Nenhum livro para remover.\n");
+                    break;
+                }
+
+                id_remover = ler_id("Digite o ID do livro que deseja remover: ");
+                alvo = bst_buscar(raiz_catalogo, id_remover);
+
+                if (alvo == NULL) {
+                    printf("Livro com ID %d nao foi encontrado no catalogo.\n", id_remover);
+                } else {
+                    raiz_catalogo = bst_remover(raiz_catalogo, id_remover);
+                    printf("Livro com ID %d removido com sucesso!\n", id_remover);
+                }
                 break;
+            }
             case 4:
                 printf("\n--- [4 - Catalogo de Livros (Em-Ordem)] ---\n");
                 if (raiz_catalogo == NULL) {
@@ -230,19 +248,36 @@ int main(void) {
                     bst_listar_em_ordem(raiz_catalogo);
                 }
                 break;
-            case 5:
-                printf("\n[Opcao 5] Enqueue na Fila sera implementado na proxima etapa.\n");
+            case 5: {
+                int id_fila;
+                printf("\n--- [5 - Inserir ID na Estrutura Linear (Enqueue)] ---\n");
+                id_fila = ler_id("Digite o ID inteiro positivo para inserir na fila (> 0): ");
+
+                if (fila_enqueue(&fila_espera, id_fila)) {
+                    printf("ID %d inserido no final da fila com sucesso!\n", id_fila);
+                }
                 break;
-            case 6:
-                printf("\n[Opcao 6] Dequeue na Fila sera implementado na proxima etapa.\n");
+            }
+            case 6: {
+                int id_removido;
+                printf("\n--- [6 - Remover da Estrutura Linear (Dequeue)] ---\n");
+
+                if (fila_dequeue(&fila_espera, &id_removido)) {
+                    printf("ID %d removido do inicio da fila com sucesso!\n", id_removido);
+                } else {
+                    printf("A fila esta vazia! Nenhum ID para remover.\n");
+                }
                 break;
+            }
             case 7:
-                printf("\n[Opcao 7] Exibicao da Fila sera implementada na proxima etapa.\n");
+                printf("\n--- [7 - Exibir Estrutura Linear (Fila)] ---\n");
+                fila_exibir(&fila_espera);
                 break;
             case 0:
-                printf("\nLiberando memoria da arvore e encerrando o sistema. Ate mais!\n");
+                printf("\nLiberando memoria da BST e da Fila e encerrando o sistema. Ate mais!\n");
                 bst_liberar(raiz_catalogo);
                 raiz_catalogo = NULL;
+                fila_liberar(&fila_espera);
                 break;
             default:
                 printf("\nOpcao invalida!\n");

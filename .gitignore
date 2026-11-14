@@ -1,0 +1,25 @@
+# Ignorar executáveis e binários do C
+*.exe
+*.out
+*.app
+biblioteca
+
+# Ignorar arquivos objeto e bibliotecas compiladas
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+
+# Ignorar pastas de IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignorar arquivos de sistema operacional
+.DS_Store
+Thumbs.db
