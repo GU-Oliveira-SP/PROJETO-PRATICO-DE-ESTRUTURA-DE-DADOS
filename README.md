@@ -76,6 +76,19 @@ Para executar o programa interativamente:
 - **CMD:** `biblioteca.exe`
 - **PowerShell:** `.\biblioteca.exe`
 
+### Compilacao no Windows (Visual Studio / MSVC Developer Command Prompt)
+
+Caso utilize o compilador do **Visual Studio (Build Tools / MSVC)**, abra o **Developer Command Prompt for VS** (ou **x64 Native Tools Command Prompt for VS**) na raiz do projeto e execute:
+
+```cmd
+cl /std:c11 /W4 /D_CRT_SECURE_NO_WARNINGS /I include src\main.c src\bst.c src\estrutura.c /Fe:biblioteca.exe
+```
+
+Para executar o programa interativamente:
+
+- **CMD:** `biblioteca.exe`
+- **PowerShell:** `.\biblioteca.exe`
+
 ---
 
 ## Como Reproduzir os Testes e Verificar Memoria
